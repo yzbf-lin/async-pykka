@@ -5,3 +5,5 @@
 - [performance.md](performance.md): Benchmark and tuning (including async-pykka vs pykka A/B) / 基准与调优（含 async-pykka vs pykka A/B）
 - [faq.md](faq.md): Frequently asked questions / 常见问题
 - [glossary.md](glossary.md): Terms and definitions / 术语定义
+- [releasing.md](releasing.md): Maintainer release guide (English)
+- [releasing.zh-CN.md](releasing.zh-CN.md): 维护者发布指南（中文）

@@ -32,9 +32,21 @@
 
 ## 📥 Installation
 
-Current latest tag: `v0.1.4`
+Latest PyPI release: `0.1.4`
 
-### From Git tag (recommended now)
+### From PyPI (recommended)
+
+```bash
+pip install async-pykka
+```
+
+### Pin exact version (optional)
+
+```bash
+pip install async-pykka==0.1.4
+```
+
+### From Git tag (alternative)
 
 ```bash
 pip install "git+https://github.com/yzbf-lin/async-pykka.git@v0.1.4"
@@ -46,13 +58,12 @@ pip install "git+https://github.com/yzbf-lin/async-pykka.git@v0.1.4"
 pip install "https://github.com/yzbf-lin/async-pykka/archive/refs/tags/v0.1.4.tar.gz"
 ```
 
-### From release wheel (after release assets uploaded)
+### From release wheel
 
 ```bash
 pip install "https://github.com/yzbf-lin/async-pykka/releases/download/v0.1.4/async_pykka-0.1.4-py3-none-any.whl"
 ```
 
-PyPI publishing is planned. Until then, use GitHub tag/release installation methods.
 Import package name: `async_pykka`.
 
 ## 🚀 Quick Start
@@ -176,34 +187,7 @@ uv run ruff check .
 uv run pytest -q
 ```
 
-## 🚢 Publishing (Maintainers)
-
-### Option A: GitHub Actions (recommended)
-
-This repository includes `.github/workflows/publish-pypi.yml`, which publishes on `v*` tags.
-
-One-time setup on PyPI (Trusted Publishing):
-
-1. In PyPI project settings, add a Trusted Publisher with:
-   - Owner: `yzbf-lin`
-   - Repository: `async-pykka`
-   - Workflow: `publish-pypi.yml`
-   - Environment: `pypi`
-2. In GitHub repo settings, create an environment named `pypi`.
-
-Release command:
-
-```bash
-git tag vX.Y.Z
-git push origin vX.Y.Z
-```
-
-### Option B: Local token publish
-
-```bash
-export PYPI_TOKEN='pypi-xxxxx'
-./scripts/publish_pypi.sh
-```
+Maintainer release guide: [`docs/releasing.md`](docs/releasing.md)
 
 ## 🙏 Attribution
 

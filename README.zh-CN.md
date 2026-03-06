@@ -32,27 +32,38 @@
 
 ## 📥 安装方式
 
-当前最新标签：`v0.1.4`
+当前 PyPI 最新版本：`0.1.4`
 
-### 方式 1：通过 Git tag 安装（当前推荐）
+### 方式 1：通过 PyPI 安装（推荐）
+
+```bash
+pip install async-pykka
+```
+
+### 方式 2：固定版本安装（可选）
+
+```bash
+pip install async-pykka==0.1.4
+```
+
+### 方式 3：通过 Git tag 安装（备选）
 
 ```bash
 pip install "git+https://github.com/yzbf-lin/async-pykka.git@v0.1.4"
 ```
 
-### 方式 2：通过源码归档安装（无需 git）
+### 方式 4：通过源码归档安装（无需 git）
 
 ```bash
 pip install "https://github.com/yzbf-lin/async-pykka/archive/refs/tags/v0.1.4.tar.gz"
 ```
 
-### 方式 3：通过 Release wheel 安装（上传 Release 资产后可用）
+### 方式 5：通过 Release wheel 安装
 
 ```bash
 pip install "https://github.com/yzbf-lin/async-pykka/releases/download/v0.1.4/async_pykka-0.1.4-py3-none-any.whl"
 ```
 
-PyPI 发布仍在计划中；当前建议使用 GitHub tag/release 方式安装。
 导入包名：`async_pykka`。
 
 ## 🚀 5 分钟上手
@@ -176,34 +187,7 @@ uv run ruff check .
 uv run pytest -q
 ```
 
-## 🚢 发布（维护者）
-
-### 方式 A：GitHub Actions 自动发布（推荐）
-
-仓库已内置 `.github/workflows/publish-pypi.yml`，在推送 `v*` 标签时自动发布到 PyPI。
-
-PyPI 一次性配置（Trusted Publishing）：
-
-1. 在 PyPI 项目设置中添加 Trusted Publisher：
-   - Owner：`yzbf-lin`
-   - Repository：`async-pykka`
-   - Workflow：`publish-pypi.yml`
-   - Environment：`pypi`
-2. 在 GitHub 仓库设置中创建名为 `pypi` 的 Environment。
-
-发布命令：
-
-```bash
-git tag vX.Y.Z
-git push origin vX.Y.Z
-```
-
-### 方式 B：本地 Token 发布
-
-```bash
-export PYPI_TOKEN='pypi-xxxxx'
-./scripts/publish_pypi.sh
-```
+维护者发布说明：[`docs/releasing.zh-CN.md`](docs/releasing.zh-CN.md)
 
 ## 🙏 致谢来源
 
