@@ -1,69 +1,85 @@
-# Scenarios
+# Scenarios / 场景说明
 
 This page maps common real-world usage to concrete async-pykka patterns.
 
-## Scenario 1: Player workflow orchestration
+本页把常见业务需求映射为可直接落地的 async-pykka 模式。
 
-### Problem
+## Scenario 1: Player workflow orchestration / 场景 1：玩家流程编排
 
-You need one actor to own per-user state and dispatch business actions in sequence.
+### Problem / 问题
 
-### Pattern
+- EN: One user needs isolated mutable state and ordered action execution.
+- 中文：单个用户需要隔离状态，并保证动作顺序执行。
 
-- One `PlayerActor` per user.
-- External code only interacts through `ActorProxy`.
-- Keep mutable state inside actor.
+### Pattern / 模式
 
-### Why this works
+- EN: One `PlayerActor` per user.
+- 中文：每个用户一个 `PlayerActor`。
 
-Single mailbox processing prevents race conditions on user state while preserving async I/O concurrency.
+- EN: External callers use `ActorProxy` only.
+- 中文：外部统一通过 `ActorProxy` 调用。
 
-## Scenario 2: Net I/O actor + notify worker actor
+- EN: Keep mutable state inside actor.
+- 中文：可变状态仅保存在 actor 内部。
 
-### Problem
+### Why this works / 为什么有效
 
-TCP responses and push-notify traffic are mixed; push traffic may burst.
+- EN: Single mailbox processing avoids state races while keeping async I/O.
+- 中文：单邮箱串行处理避免状态竞争，同时保留异步 I/O 并发能力。
 
-### Pattern
+## Scenario 2: Net I/O actor + notify worker / 场景 2：网络 Actor + 通知处理 Actor
 
-- Net actor focuses on socket read/write and response correlation.
-- Notify events are queued and consumed in batches by business actor.
+### Problem / 问题
 
-### Reference
+- EN: TCP response traffic and notify push traffic are mixed; notify may burst.
+- 中文：TCP 响应流与 notify 推送流混合，推送可能突发。
 
-- Runnable demo: `examples/notify_batch.py`
+### Pattern / 模式
 
-### Benefits
+- EN: Net actor handles socket read/write and response correlation.
+- 中文：网络 Actor 专注收发包与响应关联。
 
-- Isolates network concerns from domain logic.
-- Queue-based batching smooths traffic spikes.
+- EN: Notify events are queued and batch-consumed by business actor.
+- 中文：notify 先入队，再由业务 Actor 批量消费。
 
-## Scenario 3: Request-response with timeout fallback
+### Reference / 参考
 
-### Problem
+- `examples/notify_batch.py`
 
-A subset of protocol calls can hang or exceed SLO.
+## Scenario 3: Timeout fallback / 场景 3：超时兜底
 
-### Pattern
+### Problem / 问题
 
-- Always await with timeout (`future.get(timeout=...)`).
-- Convert timeout into deterministic business fallback.
+- EN: Some protocol calls may exceed SLO or hang.
+- 中文：部分协议请求可能超时或卡住。
 
-### Reference
+### Pattern / 模式
 
-- Runnable demo: `examples/timeout_request.py`
+- EN: Always use `future.get(timeout=...)` for latency-sensitive calls.
+- 中文：时延敏感请求统一使用 `future.get(timeout=...)`。
 
-## Scenario 4: Batch shutdown in test/CI
+- EN: Convert timeout into deterministic fallback behavior.
+- 中文：将超时统一转换成可预期的兜底逻辑。
 
-### Problem
+### Reference / 参考
 
-Actors leak between tests, causing flaky behavior.
+- `examples/timeout_request.py`
 
-### Pattern
+## Scenario 4: CI/test teardown safety / 场景 4：测试与 CI 的收尾安全
 
-- In fixture teardown, call `ActorRegistry.stop_all(current_loop_only=True)`.
-- Then clear registry if your framework reuses event loops heavily.
+### Problem / 问题
 
-### Reference
+- EN: Leaked actors can make tests flaky.
+- 中文：Actor 泄漏会导致测试不稳定。
+
+### Pattern / 模式
+
+- EN: In fixture teardown, call `ActorRegistry.stop_all(current_loop_only=True)`.
+- 中文：在 fixture teardown 中调用 `ActorRegistry.stop_all(current_loop_only=True)`。
+
+- EN: Optionally clear registry in heavily reused loop environments.
+- 中文：在重用 loop 场景可额外清理 registry。
+
+### Reference / 参考
 
 - `tests/conftest.py`
