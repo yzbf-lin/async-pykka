@@ -176,6 +176,35 @@ uv run ruff check .
 uv run pytest -q
 ```
 
+## 🚢 发布（维护者）
+
+### 方式 A：GitHub Actions 自动发布（推荐）
+
+仓库已内置 `.github/workflows/publish-pypi.yml`，在推送 `v*` 标签时自动发布到 PyPI。
+
+PyPI 一次性配置（Trusted Publishing）：
+
+1. 在 PyPI 项目设置中添加 Trusted Publisher：
+   - Owner：`yzbf-lin`
+   - Repository：`async-pykka`
+   - Workflow：`publish-pypi.yml`
+   - Environment：`pypi`
+2. 在 GitHub 仓库设置中创建名为 `pypi` 的 Environment。
+
+发布命令：
+
+```bash
+git tag vX.Y.Z
+git push origin vX.Y.Z
+```
+
+### 方式 B：本地 Token 发布
+
+```bash
+export PYPI_TOKEN='pypi-xxxxx'
+./scripts/publish_pypi.sh
+```
+
 ## 🙏 致谢来源
 
 本项目基于 Pykka 社区异步方向提案进行扩展和工程化完善。

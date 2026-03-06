@@ -176,6 +176,35 @@ uv run ruff check .
 uv run pytest -q
 ```
 
+## 🚢 Publishing (Maintainers)
+
+### Option A: GitHub Actions (recommended)
+
+This repository includes `.github/workflows/publish-pypi.yml`, which publishes on `v*` tags.
+
+One-time setup on PyPI (Trusted Publishing):
+
+1. In PyPI project settings, add a Trusted Publisher with:
+   - Owner: `yzbf-lin`
+   - Repository: `async-pykka`
+   - Workflow: `publish-pypi.yml`
+   - Environment: `pypi`
+2. In GitHub repo settings, create an environment named `pypi`.
+
+Release command:
+
+```bash
+git tag vX.Y.Z
+git push origin vX.Y.Z
+```
+
+### Option B: Local token publish
+
+```bash
+export PYPI_TOKEN='pypi-xxxxx'
+./scripts/publish_pypi.sh
+```
+
 ## 🙏 Attribution
 
 This project is inspired by async proposals around Pykka and further adapted into a standalone asyncio-first framework.
