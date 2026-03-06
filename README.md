@@ -4,133 +4,93 @@ Pure asyncio actor framework for Python, extracted as an independent project.
 
 ## 中文摘要
 
-`async-pykka` 是一个纯异步（`asyncio`）Actor 模型框架，基于 pykka 社区的异步方向尝试进行工程化完善。它强调以下约束：
+`async-pykka` 是一个纯异步（`asyncio`）Actor 框架，适用于高并发网络交互、状态隔离和事件驱动场景。
 
-- 所有 Actor 操作必须在同一个 event loop 内执行。
-- 不支持跨线程/跨 event loop 的 `tell`/`ask`/`stop` 调用。
-- 使用 ActorRef + ActorProxy + Future 组织异步并发消息处理。
+- 所有 Actor 操作必须在同一 event loop 内执行。
+- 默认通过 `ActorRef` / `ActorProxy` / `Future` 完成异步消息编排。
+- 兼容 Pykka 风格 API，但明确只支持 asyncio 模型。
 
-## Why async-pykka
+## 5-Minute Quick Start
 
-- Pure asyncio actor model, without threading actor implementations.
-- Familiar Pykka-style API (`ActorRef`, `ActorProxy`, `Future`) with async semantics.
-- Explicit loop-safety checks to fail fast on wrong-loop calls.
-- Designed for application-level actor workflows (robot orchestration, event handling, async task isolation).
-
-## Relationship to Pykka
-
-This project is inspired by and derived from async proposals around Pykka, then further completed and adapted into a standalone asyncio-first actor framework.
-
-See:
-
-- <https://github.com/jodal/pykka/pull/218>
-- <https://github.com/x0ul/pykka.git>
-
-Also see [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) for license and notice requirements.
-
-## Installation
-
-### With uv
+### 1) Install
 
 ```bash
 uv venv
 uv sync --group dev
 ```
 
-### With pip (editable for local development)
+### 2) Run first example
 
 ```bash
-python -m pip install -e .
+uv run python examples/quickstart_counter.py
 ```
 
-## Quick Start
+### 3) Run tests
+
+```bash
+uv run pytest -q
+```
+
+## Core Concepts
+
+| Concept | Role | Typical API |
+| --- | --- | --- |
+| `AsyncioActor` | Actor base class | `on_start`, `on_receive`, `on_stop` |
+| `ActorRef` | Safe message endpoint | `tell`, `ask`, `stop`, `proxy` |
+| `ActorProxy` | Async RPC-like access | `await proxy.method()`, `await proxy.set(...)` |
+| `Future` | Async result carrier | `await future`, `future.get(timeout=...)` |
+| `ActorRegistry` | Actor discovery/control | `get_by_class`, `broadcast`, `stop_all` |
+
+## Practical Scenarios
+
+### 1) Request/Response with timeout
+
+Use `ask()` or proxy method calls when you need a reply:
 
 ```python
-import asyncio
-import async_pykka
-
-
-class GreeterActor(async_pykka.AsyncioActor):
-    def __init__(self, name: str):
-        super().__init__()
-        self.name = name
-
-    async def greet(self) -> str:
-        return f"Hello, {self.name}!"
-
-
-async def main() -> None:
-    ref = GreeterActor.start("World")
-    proxy = ref.proxy()
-
-    message = await proxy.greet()
-    print(message)
-
-    await ref.stop()
-
-
-if __name__ == "__main__":
-    asyncio.run(main())
+future = ref.ask({"type": "query", "key": "profile"})
+result = await future.get(timeout=1.0)
 ```
 
-## Common Usage Patterns
+See runnable example: [`examples/timeout_request.py`](examples/timeout_request.py)
 
-### 1. `tell`: fire-and-forget message
+### 2) High-frequency notify ingestion
 
-```python
-ref.tell({"type": "tick"})
-```
+Pattern: Net actor receives packets and pushes notify events into a queue; business actor batches them.
 
-### 2. `ask`: request/response
+See runnable example: [`examples/notify_batch.py`](examples/notify_batch.py)
 
-```python
-future = ref.ask({"type": "sum", "a": 1, "b": 2})
-result = await future
-```
-
-### 3. `proxy.set`: set actor attributes safely
-
-```python
-proxy = ref.proxy()
-await proxy.set("counter", 10)
-```
-
-Direct assignment is intentionally blocked:
-
-```python
-proxy.counter = 11  # raises AttributeError
-```
-
-### 4. Stop all actors in current loop
+### 3) Graceful shutdown for many actors
 
 ```python
 results = await async_pykka.ActorRegistry.stop_all(current_loop_only=True)
+assert all(results)
 ```
 
-### 5. Collect multiple futures
+See tests: [`tests/test_onboarding_scenarios.py`](tests/test_onboarding_scenarios.py)
 
-```python
-results = await async_pykka.get_all([future_a, future_b, future_c])
+## Performance Positioning (What is better here)
+
+Compared with thread-based actor models in I/O-heavy workloads:
+
+- Lower context-switch pressure by staying on asyncio loop.
+- Cleaner state isolation per actor mailbox.
+- Natural backpressure design using async queues.
+- Easier latency tracking via protocol-level metrics in real systems.
+
+For concrete numbers in your environment, run the benchmark harness:
+
+```bash
+uv run python examples/benchmark_ping.py --actors 200 --requests 20000 --concurrency 500
 ```
 
-## Event Loop Safety Rules
+Benchmark guide: [`docs/performance.md`](docs/performance.md)
 
-Every `ActorRef` is bound to the event loop where the actor was created.
+## Documentation Map
 
-- Calling `tell`/`ask`/`stop` from another loop raises `RuntimeError`.
-- Calling actor APIs outside a running event loop also raises `RuntimeError`.
-
-This is by design to avoid subtle cross-loop race conditions.
-
-## Migration Notes (from in-repo module to standalone)
-
-If you previously imported this module from a monorepo-local path, migration is typically:
-
-1. Add this standalone project as dependency source.
-2. Keep imports unchanged (`import async_pykka`).
-3. Re-run your actor tests; ensure all actor operations remain in one loop.
-
-Public API names are intentionally preserved for compatibility.
+- Quickstart: [`docs/quickstart.md`](docs/quickstart.md)
+- Real-world scenarios: [`docs/scenarios.md`](docs/scenarios.md)
+- Performance and benchmark: [`docs/performance.md`](docs/performance.md)
 
 ## Development
 
@@ -140,8 +100,15 @@ uv run ruff check .
 uv run pytest -q
 ```
 
+## Relationship to Pykka
+
+This project is inspired by and derived from async proposals around Pykka, then further completed and adapted into a standalone asyncio-first actor framework.
+
+- <https://github.com/jodal/pykka/pull/218>
+- <https://github.com/x0ul/pykka.git>
+
+See [`ACKNOWLEDGEMENTS.md`](ACKNOWLEDGEMENTS.md) and [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) for attribution and notices.
+
 ## License
 
 MIT. See [`LICENSE`](LICENSE).
-
-Portions are derived from Apache-2.0 licensed upstream work; comply with retention requirements in [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).

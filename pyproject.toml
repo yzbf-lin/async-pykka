@@ -40,6 +40,8 @@ packages = ["async_pykka"]
 include = [
   "/async_pykka",
   "/tests",
+  "/docs",
+  "/examples",
   "/README.md",
   "/LICENSE",
   "/ACKNOWLEDGEMENTS.md",
