@@ -27,7 +27,7 @@ uv run pytest -q
 3. 提交并推送到 `main`：
 
 ```bash
-git add pyproject.toml README.md README.zh-CN.md
+git add pyproject.toml
 git commit -m "chore: release vX.Y.Z"
 git push origin main
 ```

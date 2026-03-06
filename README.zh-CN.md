@@ -32,38 +32,39 @@
 
 ## 📥 安装方式
 
-当前 PyPI 最新版本：`0.1.4`
+PyPI 项目地址：<https://pypi.org/project/async-pykka/>
 
 ### 方式 1：通过 PyPI 安装（推荐）
 
 ```bash
-pip install async-pykka
+pip install -U async-pykka
 ```
 
 ### 方式 2：固定版本安装（可选）
 
 ```bash
-pip install async-pykka==0.1.4
+pip install async-pykka==X.Y.Z
 ```
 
 ### 方式 3：通过 Git tag 安装（备选）
 
 ```bash
-pip install "git+https://github.com/yzbf-lin/async-pykka.git@v0.1.4"
+pip install "git+https://github.com/yzbf-lin/async-pykka.git@vX.Y.Z"
 ```
 
 ### 方式 4：通过源码归档安装（无需 git）
 
 ```bash
-pip install "https://github.com/yzbf-lin/async-pykka/archive/refs/tags/v0.1.4.tar.gz"
+pip install "https://github.com/yzbf-lin/async-pykka/archive/refs/tags/vX.Y.Z.tar.gz"
 ```
 
 ### 方式 5：通过 Release wheel 安装
 
 ```bash
-pip install "https://github.com/yzbf-lin/async-pykka/releases/download/v0.1.4/async_pykka-0.1.4-py3-none-any.whl"
+pip install "https://github.com/yzbf-lin/async-pykka/releases/download/vX.Y.Z/async_pykka-X.Y.Z-py3-none-any.whl"
 ```
 
+请将 `X.Y.Z` 替换为目标发布版本号。
 导入包名：`async_pykka`。
 
 ## 🚀 5 分钟上手

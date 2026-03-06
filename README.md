@@ -32,38 +32,39 @@
 
 ## 📥 Installation
 
-Latest PyPI release: `0.1.4`
+Package on PyPI: <https://pypi.org/project/async-pykka/>
 
 ### From PyPI (recommended)
 
 ```bash
-pip install async-pykka
+pip install -U async-pykka
 ```
 
 ### Pin exact version (optional)
 
 ```bash
-pip install async-pykka==0.1.4
+pip install async-pykka==X.Y.Z
 ```
 
 ### From Git tag (alternative)
 
 ```bash
-pip install "git+https://github.com/yzbf-lin/async-pykka.git@v0.1.4"
+pip install "git+https://github.com/yzbf-lin/async-pykka.git@vX.Y.Z"
 ```
 
 ### From source archive (no git required)
 
 ```bash
-pip install "https://github.com/yzbf-lin/async-pykka/archive/refs/tags/v0.1.4.tar.gz"
+pip install "https://github.com/yzbf-lin/async-pykka/archive/refs/tags/vX.Y.Z.tar.gz"
 ```
 
 ### From release wheel
 
 ```bash
-pip install "https://github.com/yzbf-lin/async-pykka/releases/download/v0.1.4/async_pykka-0.1.4-py3-none-any.whl"
+pip install "https://github.com/yzbf-lin/async-pykka/releases/download/vX.Y.Z/async_pykka-X.Y.Z-py3-none-any.whl"
 ```
 
+Replace `X.Y.Z` with the target release version.
 Import package name: `async_pykka`.
 
 ## 🚀 Quick Start
