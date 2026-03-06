@@ -8,6 +8,9 @@ version = "0.1.0"
 source = { editable = "." }
 
 [package.dev-dependencies]
+bench = [
+    { name = "pykka" },
+]
 dev = [
     { name = "pytest" },
     { name = "pytest-asyncio" },
@@ -17,6 +20,7 @@ dev = [
 [package.metadata]
 
 [package.metadata.requires-dev]
+bench = [{ name = "pykka", specifier = ">=4.0.0" }]
 dev = [
     { name = "pytest", specifier = ">=8.3.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
@@ -66,6 +70,15 @@ source = { registry = "https://mirrors.aliyun.com/pypi/simple" }
 sdist = { url = "https://mirrors.aliyun.com/pypi/packages/b0/77/a5b8c569bf593b0140bde72ea885a803b82086995367bf2037de0159d924/pygments-2.19.2.tar.gz", hash = "sha256:636cb2477cec7f8952536970bc533bc43743542f70392ae026374600add5b887" }
 wheels = [
     { url = "https://mirrors.aliyun.com/pypi/packages/c7/21/705964c7812476f378728bdf590ca4b771ec72385c533964653c68e86bdc/pygments-2.19.2-py3-none-any.whl", hash = "sha256:86540386c03d588bb81d44bc3928634ff26449851e99741617ecb9037ee5ec0b" },
+]
+
+[[package]]
+name = "pykka"
+version = "4.4.1"
+source = { registry = "https://mirrors.aliyun.com/pypi/simple" }
+sdist = { url = "https://mirrors.aliyun.com/pypi/packages/5f/66/ad4aef0f938fa3e3abb6eba78fc86adbd01dc0441929d75186e3063efe5d/pykka-4.4.1.tar.gz", hash = "sha256:e4ccac930765be9b8cc4466162a0e99bfc6568e70076e74bb5c9ecf2cebc009b" }
+wheels = [
+    { url = "https://mirrors.aliyun.com/pypi/packages/c2/a6/fc940d2260b3c7183952e5f269a75c8c7d4e4d5ca0de11adf94b082e9466/pykka-4.4.1-py3-none-any.whl", hash = "sha256:7faade94a424f47a3de025e85ac6671f6131009b5b0e7c3a0d2ac8a0ceeda124" },
 ]
 
 [[package]]

@@ -18,11 +18,68 @@ This guide explains what to measure and how to benchmark async-pykka fairly.
 - EN: Future-based request multiplexing with timeout control.
 - 中文：基于 Future 的请求多路复用和超时控制。
 
-## Benchmark harness / 基准工具
+## Baseline Benchmark / 基线压测
 
 ```bash
 uv run python examples/benchmark_ping.py --actors 200 --requests 20000 --concurrency 500
 ```
+
+## A/B Benchmark (Network I/O): async-pykka vs pykka
+
+### Step 1: prepare dependencies / 准备依赖
+
+```bash
+uv sync --group dev --group bench
+```
+
+### Step 2: fetch pykka repository / 拉取 pykka 仓库
+
+```bash
+./scripts/fetch_pykka_repo.sh
+```
+
+This clones to `.benchmarks/pykka-repo`.
+
+会克隆到 `.benchmarks/pykka-repo`。
+
+### Step 3: run A/B network benchmark / 执行网络 I/O A/B 对比
+
+```bash
+uv run python examples/benchmark_network_ab.py \
+  --actors 50 \
+  --requests 5000 \
+  --concurrency 200 \
+  --payload-bytes 256 \
+  --rounds 3 \
+  --json-output .benchmarks/network_ab_result.json
+```
+
+If `.benchmarks/pykka-repo` does not exist, script falls back to installed pypi `pykka`.
+
+如果 `.benchmarks/pykka-repo` 不存在，脚本会回退使用 pip 安装的 `pykka`。
+
+## Sample result (local run) / 样例结果（本地实测）
+
+Environment / 环境：Apple Silicon (macOS), Python 3.12.10, localhost TCP echo server.
+
+Config / 配置：`actors=50, requests=5000, concurrency=200, payload=256B, rounds=3`。
+
+| Framework | Throughput (req/s) | Mean (ms) | P95 (ms) | P99 (ms) |
+| --- | ---: | ---: | ---: | ---: |
+| async-pykka | 29909.04 | 5.4030 | 6.6686 | 11.9927 |
+| pykka | 14608.27 | 11.7405 | 15.9147 | 21.4616 |
+
+Delta / 差异（async-pykka vs pykka）：
+
+- EN: Throughput +104.74%
+- 中文：吞吐提升 +104.74%
+
+- EN: P95 latency improvement +58.10%
+- 中文：P95 时延降低 +58.10%
+
+Raw report / 原始报告：`.benchmarks/network_ab_result.json`（由脚本生成，不纳入版本库）。
+
+Note / 说明：实际数值与 CPU、Python 小版本、调度噪声、并发配置密切相关，请以你本机多轮中位数为准。
 
 ## Recommended benchmark matrix / 建议压测矩阵
 
@@ -30,8 +87,8 @@ uv run python examples/benchmark_ping.py --actors 200 --requests 20000 --concurr
    中文：`actors`：50 / 200 / 1000
 2. EN: `concurrency`: 100 / 500 / 2000
    中文：`concurrency`：100 / 500 / 2000
-3. EN: payload size: tiny / medium / large
-   中文：payload 大小：小 / 中 / 大
+3. EN: payload size: 64B / 256B / 1KB / 4KB
+   中文：payload 大小：64B / 256B / 1KB / 4KB
 4. EN: timeout policy: none / strict
    中文：超时策略：无 / 严格
 

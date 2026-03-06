@@ -131,6 +131,16 @@ Run benchmark / 运行基准：
 uv run python examples/benchmark_ping.py --actors 200 --requests 20000 --concurrency 500
 ```
 
+Run A/B network benchmark vs pykka / 运行与 pykka 的网络 I/O A/B 对比：
+
+```bash
+uv sync --group dev --group bench
+./scripts/fetch_pykka_repo.sh
+uv run python examples/benchmark_network_ab.py --actors 50 --requests 5000 --concurrency 200 --rounds 3
+```
+
+Details / 详细说明：[`docs/performance.md`](docs/performance.md)
+
 ## Development / 开发命令
 
 ```bash
