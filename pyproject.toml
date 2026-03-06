@@ -1,0 +1,70 @@
+[project]
+name = "async-pykka"
+version = "0.1.0"
+description = "Pure asyncio actor framework for Python"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+  { name = "linwu" }
+]
+requires-python = ">=3.12"
+keywords = ["actor", "asyncio", "concurrency", "pykka"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Framework :: AsyncIO",
+  "Topic :: Software Development :: Libraries",
+  "Topic :: System :: Distributed Computing",
+]
+dependencies = []
+
+[dependency-groups]
+dev = [
+  "pytest>=8.3.0",
+  "pytest-asyncio>=0.24.0",
+  "ruff>=0.8.0",
+]
+
+[build-system]
+requires = ["hatchling>=1.27.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["async_pykka"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "/async_pykka",
+  "/tests",
+  "/README.md",
+  "/LICENSE",
+  "/ACKNOWLEDGEMENTS.md",
+  "/THIRD_PARTY_NOTICES.md",
+]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+exclude = [
+  ".git",
+  ".venv",
+  "build",
+  "dist",
+  "__pycache__",
+]
+
+[tool.ruff.lint]
+select = ["E", "F"]
+ignore = [
+  "E501",
+  "F401",
+]
