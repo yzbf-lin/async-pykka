@@ -1,6 +1,6 @@
 <div align="center">
   <h1>async-pykka</h1>
-  <h3>面向 Python 的 asyncio-first Actor 框架</h3>
+  <h3>面向 Python 的 asyncio-first Actor 模型框架</h3>
 
   <p>
     <img src="https://img.shields.io/badge/Python-3.12%2B-3776AB?style=flat&logo=python&logoColor=white" alt="Python">
@@ -15,7 +15,7 @@
 
 ---
 
-`async-pykka` 是一个纯 `asyncio` 的 Actor 框架，延续 Pykka 风格 API，重点优化 I/O 密集场景下的吞吐与延迟表现。
+`async-pykka` 是一个纯 `asyncio` 的框架，基于 [Actor 模型](https://en.wikipedia.org/wiki/Actor_model) 实现，延续 Pykka 风格 API，重点优化 I/O 密集场景下的吞吐与延迟表现。
 
 [快速示例](examples/quickstart_counter.py) | [场景说明](docs/scenarios.md) | [性能文档](docs/performance.md) | [常见问题](docs/faq.md)
 

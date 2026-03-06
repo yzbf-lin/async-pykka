@@ -1,6 +1,6 @@
 <div align="center">
   <h1>async-pykka</h1>
-  <h3>Asyncio-First Actor Framework for Python</h3>
+  <h3>Asyncio-First Python Actor Model Framework</h3>
 
   <p>
     <img src="https://img.shields.io/badge/Python-3.12%2B-3776AB?style=flat&logo=python&logoColor=white" alt="Python">
@@ -15,7 +15,7 @@
 
 ---
 
-`async-pykka` is a pure asyncio actor framework inspired by Pykka-style APIs, focused on high-throughput I/O workloads.
+`async-pykka` is a pure asyncio framework that implements the [Actor model](https://en.wikipedia.org/wiki/Actor_model), inspired by Pykka-style APIs and focused on high-throughput I/O workloads.
 
 [Quick Start Example](examples/quickstart_counter.py) | [Scenarios](docs/scenarios.md) | [Performance](docs/performance.md) | [FAQ](docs/faq.md)
 
