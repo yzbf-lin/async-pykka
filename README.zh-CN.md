@@ -30,6 +30,31 @@
 - 内置异步代理与注册表，支持大规模 Actor 管理
 - 严格 loop 绑定安全模型，便于线上问题定位
 
+## 📥 安装方式
+
+当前最新标签：`v0.1.2`
+
+### 方式 1：通过 Git tag 安装（当前推荐）
+
+```bash
+pip install "git+https://github.com/yzbf-lin/async-pykka.git@v0.1.2"
+```
+
+### 方式 2：通过源码归档安装（无需 git）
+
+```bash
+pip install "https://github.com/yzbf-lin/async-pykka/archive/refs/tags/v0.1.2.tar.gz"
+```
+
+### 方式 3：通过 Release wheel 安装（上传 Release 资产后可用）
+
+```bash
+pip install "https://github.com/yzbf-lin/async-pykka/releases/download/v0.1.2/async_pykka-0.1.2-py3-none-any.whl"
+```
+
+PyPI 发布仍在计划中；当前建议使用 GitHub tag/release 方式安装。
+导入包名：`async_pykka`。
+
 ## 🚀 5 分钟上手
 
 ```bash

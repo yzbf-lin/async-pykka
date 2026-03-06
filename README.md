@@ -30,6 +30,31 @@
 - Built-in async proxy and registry utilities for large actor sets
 - Deterministic loop-bound safety model for production debugging
 
+## 📥 Installation
+
+Current latest tag: `v0.1.2`
+
+### From Git tag (recommended now)
+
+```bash
+pip install "git+https://github.com/yzbf-lin/async-pykka.git@v0.1.2"
+```
+
+### From source archive (no git required)
+
+```bash
+pip install "https://github.com/yzbf-lin/async-pykka/archive/refs/tags/v0.1.2.tar.gz"
+```
+
+### From release wheel (after release assets uploaded)
+
+```bash
+pip install "https://github.com/yzbf-lin/async-pykka/releases/download/v0.1.2/async_pykka-0.1.2-py3-none-any.whl"
+```
+
+PyPI publishing is planned. Until then, use GitHub tag/release installation methods.
+Import package name: `async_pykka`.
+
 ## 🚀 Quick Start
 
 ```bash
