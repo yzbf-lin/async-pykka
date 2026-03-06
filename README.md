@@ -1,73 +1,73 @@
 <div align="center">
   <h1>async-pykka</h1>
-  <h3>Asyncio-First Python Actor Model Framework</h3>
+  <h3>面向 Python 的 asyncio-first Actor 模型框架</h3>
 
   <p>
     <img src="https://img.shields.io/badge/Python-3.12%2B-3776AB?style=flat&logo=python&logoColor=white" alt="Python">
-    <img src="https://img.shields.io/badge/Concurrency-asyncio--first-0ea5e9?style=flat" alt="Concurrency">
-    <img src="https://img.shields.io/badge/license-MIT-22c55e" alt="License">
+    <img src="https://img.shields.io/badge/并发模型-asyncio--first-0ea5e9?style=flat" alt="Concurrency">
+    <img src="https://img.shields.io/badge/许可证-MIT-22c55e" alt="License">
     <a href="https://github.com/yzbf-lin/async-pykka/actions/workflows/ci.yml"><img src="https://github.com/yzbf-lin/async-pykka/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   </p>
 
-[中文](README.zh-CN.md) | **English**
+**中文** | [English](README.en.md)
 
 </div>
 
 ---
 
-`async-pykka` is a pure asyncio framework that implements the [Actor model](https://en.wikipedia.org/wiki/Actor_model), inspired by Pykka-style APIs and focused on high-throughput I/O workloads.
+`async-pykka` 是一个纯 `asyncio` 的框架，基于 [Actor 模型](https://en.wikipedia.org/wiki/Actor_model) 实现，延续 Pykka 风格 API，重点优化 I/O 密集场景下的吞吐与延迟表现。
 
-[Quick Start Example](examples/quickstart_counter.py) | [Scenarios](docs/scenarios.md) | [Performance](docs/performance.md) | [FAQ](docs/faq.md)
+[快速示例](examples/quickstart_counter.py) | [场景说明](docs/scenarios.md) | [性能文档](docs/performance.md) | [常见问题](docs/faq.md)
 
 > [!IMPORTANT]
-> **Same-loop constraint**
-> All actor operations must run in the same event loop. Cross-thread or cross-loop calls fail fast with `RuntimeError`.
+> **同一事件循环约束**
+> 所有 Actor 操作必须运行在同一个 event loop 中。跨线程/跨 loop 调用会快速失败并抛出 `RuntimeError`。
 
-## ✨ Highlights
+## ✨ 核心特性
 
-- Familiar Actor model API: `start / proxy / ask / tell / stop`
-- Asyncio-first scheduling with no actor thread pool dependency
-- Built-in async proxy and registry utilities for large actor sets
-- Deterministic loop-bound safety model for production debugging
+- 保留熟悉的 Actor API：`start / proxy / ask / tell / stop`
+- asyncio-first 调度模型，不依赖 Actor 线程池
+- 内置异步代理与注册表，支持大规模 Actor 管理
+- 严格 loop 绑定安全模型，便于线上问题定位
 
-## 📥 Installation
+## 📥 安装方式
 
-Package on PyPI: <https://pypi.org/project/async-pykka/>
+PyPI 项目地址：<https://pypi.org/project/async-pykka/>
 
-### From PyPI (recommended)
+### 方式 1：通过 PyPI 安装（推荐）
 
 ```bash
 pip install -U async-pykka
 ```
 
-### Pin exact version (optional)
+### 方式 2：固定版本安装（可选）
 
 ```bash
 pip install async-pykka==X.Y.Z
 ```
 
-### From Git tag (alternative)
+### 方式 3：通过 Git tag 安装（备选）
 
 ```bash
 pip install "git+https://github.com/yzbf-lin/async-pykka.git@vX.Y.Z"
 ```
 
-### From source archive (no git required)
+### 方式 4：通过源码归档安装（无需 git）
 
 ```bash
 pip install "https://github.com/yzbf-lin/async-pykka/archive/refs/tags/vX.Y.Z.tar.gz"
 ```
 
-### From release wheel
+### 方式 5：通过 Release wheel 安装
 
 ```bash
 pip install "https://github.com/yzbf-lin/async-pykka/releases/download/vX.Y.Z/async_pykka-X.Y.Z-py3-none-any.whl"
 ```
 
-Replace `X.Y.Z` with the target release version.
-Import package name: `async_pykka`.
+请将 `X.Y.Z` 替换为目标发布版本号。
+导入包名：`async_pykka`。
 
-## 🚀 Quick Start
+## 🚀 5 分钟上手
 
 ```bash
 uv venv
@@ -76,9 +76,9 @@ uv run python examples/quickstart_counter.py
 uv run pytest -q
 ```
 
-Expected output: `counter=5`
+预期输出：`counter=5`
 
-## 🧩 Minimal Example
+## 🧩 最小示例
 
 ```python
 import asyncio
@@ -108,43 +108,43 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-## 📦 Core API
+## 📦 核心 API
 
-| API | Description |
+| API | 说明 |
 | --- | --- |
-| `AsyncioActor` | Actor base class |
-| `ActorRef.tell(msg)` | Fire-and-forget message send |
-| `ActorRef.ask(msg)` | Request-response `Future` |
-| `ActorRef.proxy()` | Async proxy facade |
-| `ActorProxy.set(name, value)` | Safe actor state mutation |
-| `ActorRegistry.stop_all()` | Graceful batch shutdown |
-| `Future.get(timeout=...)` | Timeout-aware await |
+| `AsyncioActor` | Actor 基类 |
+| `ActorRef.tell(msg)` | 发送消息，不等待返回 |
+| `ActorRef.ask(msg)` | 请求-响应 `Future` |
+| `ActorRef.proxy()` | 异步代理调用入口 |
+| `ActorProxy.set(name, value)` | 安全设置 Actor 内部状态 |
+| `ActorRegistry.stop_all()` | 批量优雅关闭 |
+| `Future.get(timeout=...)` | 支持超时等待 |
 
-## 🧠 Common Patterns
+## 🧠 常见模式
 
-### Request/Response with timeout
+### 带超时的请求响应
 
 ```python
 future = ref.ask({"type": "query", "key": "profile"})
 result = await future.get(timeout=1.0)
 ```
 
-### Notify queue + batch handling
+### Notify 入队 + 批处理
 
-Put high-frequency notify events into a queue, then consume in batches.
+高频 notify 事件先入队，再批量消费，避免处理抖动。
 
-Runnable example: [`examples/notify_batch.py`](examples/notify_batch.py)
+可运行示例：[`examples/notify_batch.py`](examples/notify_batch.py)
 
-### Graceful shutdown
+### 优雅停机
 
 ```python
 results = await async_pykka.ActorRegistry.stop_all(current_loop_only=True)
 assert all(results)
 ```
 
-## ⚡ Network I/O A/B Benchmark
+## ⚡ 网络 I/O A/B 基准
 
-Run A/B benchmark against upstream `pykka`:
+执行与上游 `pykka` 的对比测试：
 
 ```bash
 uv sync --group dev --group bench
@@ -152,35 +152,35 @@ uv sync --group dev --group bench
 uv run python examples/benchmark_network_ab.py --actors 50 --requests 5000 --concurrency 200 --rounds 3
 ```
 
-Benchmark setup (2026-03-06): `actors=50`, `requests=5000`, `concurrency=200`, `payload_bytes=256`, `rounds=3`, localhost TCP echo server.
+测试配置（2026-03-06）：`actors=50`、`requests=5000`、`concurrency=200`、`payload_bytes=256`、`rounds=3`，本地 TCP echo 服务。
 
 <table align="center">
   <tr align="center">
     <td align="center" valign="top">
-      <img src="docs/assets/network-ab-throughput.svg" alt="Throughput" width="420">
+      <img src="docs/assets/network-ab-throughput.svg" alt="吞吐对比" width="420">
     </td>
     <td align="center" valign="top">
-      <img src="docs/assets/network-ab-p95-latency.svg" alt="p95 Latency" width="420">
+      <img src="docs/assets/network-ab-p95-latency.svg" alt="p95 延迟对比" width="420">
     </td>
   </tr>
 </table>
 
-| Metric (avg over 3 rounds) | async-pykka | pykka | Delta |
+| 指标（3 轮平均） | async-pykka | pykka | 差异 |
 | --- | --- | --- | --- |
-| Throughput (req/s) | 29999.08 | 14514.66 | +106.68% |
-| Mean latency (ms) | 5.3951 | 11.9221 | 54.75% lower |
-| p95 latency (ms) | 6.6906 | 13.9568 | 52.06% lower |
-| p99 latency (ms) | 11.8346 | 20.5744 | 42.48% lower |
+| 吞吐 (req/s) | 29999.08 | 14514.66 | +106.68% |
+| 平均延迟 (ms) | 5.3951 | 11.9221 | 降低 54.75% |
+| p95 延迟 (ms) | 6.6906 | 13.9568 | 降低 52.06% |
+| p99 延迟 (ms) | 11.8346 | 20.5744 | 降低 42.48% |
 
-## 📚 Documentation
+## 📚 文档索引
 
-- [Quickstart](docs/quickstart.md)
-- [Scenarios](docs/scenarios.md)
-- [Performance Guide](docs/performance.md)
-- [FAQ](docs/faq.md)
-- [Glossary](docs/glossary.md)
+- [快速上手](docs/quickstart.md)
+- [场景说明](docs/scenarios.md)
+- [性能指南](docs/performance.md)
+- [常见问题](docs/faq.md)
+- [术语表](docs/glossary.md)
 
-## 🛠 Development
+## 🛠 开发命令
 
 ```bash
 uv sync --group dev
@@ -188,17 +188,17 @@ uv run ruff check .
 uv run pytest -q
 ```
 
-Maintainer release guide: [`docs/releasing.md`](docs/releasing.md)
+维护者发布说明：[`docs/releasing.zh-CN.md`](docs/releasing.zh-CN.md)
 
-## 🙏 Attribution
+## 🙏 致谢来源
 
-This project is inspired by async proposals around Pykka and further adapted into a standalone asyncio-first framework.
+本项目基于 Pykka 社区异步方向提案进行扩展和工程化完善。
 
 - <https://github.com/jodal/pykka/pull/218>
 - <https://github.com/x0ul/pykka.git>
 
-See: [`ACKNOWLEDGEMENTS.md`](ACKNOWLEDGEMENTS.md), [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)
+参见：[`ACKNOWLEDGEMENTS.md`](ACKNOWLEDGEMENTS.md), [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)
 
-## 📄 License
+## 📄 许可证
 
-MIT. See [`LICENSE`](LICENSE).
+MIT，详见 [`LICENSE`](LICENSE)。
