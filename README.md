@@ -32,24 +32,24 @@
 
 ## 📥 Installation
 
-Current latest tag: `v0.1.2`
+Current latest tag: `v0.1.3`
 
 ### From Git tag (recommended now)
 
 ```bash
-pip install "git+https://github.com/yzbf-lin/async-pykka.git@v0.1.2"
+pip install "git+https://github.com/yzbf-lin/async-pykka.git@v0.1.3"
 ```
 
 ### From source archive (no git required)
 
 ```bash
-pip install "https://github.com/yzbf-lin/async-pykka/archive/refs/tags/v0.1.2.tar.gz"
+pip install "https://github.com/yzbf-lin/async-pykka/archive/refs/tags/v0.1.3.tar.gz"
 ```
 
 ### From release wheel (after release assets uploaded)
 
 ```bash
-pip install "https://github.com/yzbf-lin/async-pykka/releases/download/v0.1.2/async_pykka-0.1.2-py3-none-any.whl"
+pip install "https://github.com/yzbf-lin/async-pykka/releases/download/v0.1.3/async_pykka-0.1.3-py3-none-any.whl"
 ```
 
 PyPI publishing is planned. Until then, use GitHub tag/release installation methods.
